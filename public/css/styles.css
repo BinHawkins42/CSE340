@@ -328,5 +328,21 @@ nav ul a {
   footer {
     padding-inline-start: 2rem;
   }
+
+  /* classification selection */
+
+  #inv-display {
+    display: flex;
+    list-style: none;
+
+  }
+
+  #inv-display li {
+    padding: .5rem;
+    margin: .3rem;
+    border: solid black.2rem;
+    border-radius: .3rem;
+
+  }
 }
   
