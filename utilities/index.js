@@ -64,11 +64,11 @@ Util.buildClassificationGrid = async function(data){
 Util.buildDetailGrid = async function(data){
   let grid
   if(data.length > 0){
-    let detail =data[0]
-    grid = '<div>'
-      grid += '<h2 id="vehicle_title">'  + vehicle.inv_make + ' ' + vehicle.inv_model +  '</h2>'
+    let vehicle =data[0]
+    grid = '<div class="detail_body">'
       grid += '<div><img src="' + vehicle.inv_image +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model +' on CSE Motors" /></div>'
       grid += '<div class="vehicle_info">'
+      grid += '<h2 id="vehicle_title">'  + vehicle.inv_make + ' ' + vehicle.inv_model +  '</h2>'
       grid += '<p>' + vehicle.inv_description + '</p>'
       grid += '<p>' + vehicle.inv_year + '</p>'
       grid += '<p>' + vehicle.inv_miles + '</p>'
@@ -80,5 +80,34 @@ Util.buildDetailGrid = async function(data){
   }
   return grid
 }
+
+/* ****************************************
+ * Middleware For Handling Errors
+ * Wrap other function in this for 
+ * General Error Handling
+ **************************************** */
+Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+/******************************************
+ * build dynamic select classification
+ * ****************************************/
+
+Util.buildClassificationList = async function (classification_id = null) {
+  let data = await invModel.getClassifications()
+  let classificationList =
+  '<select name="classification_id" id="classificationList">'
+  classificationList += "<option>Choose a Classifiaction</option>"
+  data.rows.forEach((row)=> {
+      classificationList += '<option value="' + row.classification_id + '"'
+          if (classification_id != null && row.classification_id == classification_id) {
+            classificationList += " selected "
+          }
+    classificationList += ">" + row.classification_name + "</option>"
+  })
+  classificationList += "</select>"
+  return classificationList
+}
+
+
 
 module.exports = Util

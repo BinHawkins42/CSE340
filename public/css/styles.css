@@ -193,6 +193,32 @@ nav ul a {
   font-weight: bold;
 }
 
+form {
+  background-color: blue;
+  margin: 1rem;
+  padding: .5rem;
+  width: 18rem;
+  border-radius: 2rem;
+}
+
+form fieldset {
+  border: 0;
+  width: 15rem;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-right: 10%;
+}
+
+form, .top {
+  color:white;
+  font-size: large;
+
+}
+
+form, .submitBtn {
+  padding-right: 25%;
+}
+
 @media screen and (min-width: 800px) {
 
 
@@ -343,6 +369,49 @@ nav ul a {
     border: solid black.2rem;
     border-radius: .3rem;
 
+  }
+  form {
+    background-color: blue;
+    margin: 1rem;
+    padding: .5rem;
+    width: 97%;
+    border-radius: 2rem;
+  }
+  
+  form fieldset {
+    border: 0;
+    width: 85%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-right: 10%;
+  }
+  
+  form, .top {
+    color:white;
+    font-size: large;
+  
+  }
+  
+  form, .submitBtn {
+    padding-right: 25%;
+  }
+
+  .detail_body {
+    display: flex;
+
+  }
+
+  .title {
+    padding-left: 1rem;
+  }
+
+  .detail_body, img {
+    padding: 2rem;
+  }
+
+  .vehicle_info {
+    display: flex;
+    flex-direction: column;
   }
 }
   

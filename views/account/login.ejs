@@ -1,0 +1,25 @@
+<%- messages() %>
+
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+<div>
+<form id="login" method="get" action="">
+            
+    <fieldset>
+        <legend>Login</legend>
+        <label class="top">Email*<input type="account_email" name="account_email" placeholder="someone@gmail.com" required></label>
+        <label Class="top">Passward*<input type="account_password" name="account_password" placeholder="*********" required></label>
+    </fieldset>
+
+    <input type="submit" value="Login" class="submitBtn">
+
+
+</form>
+
+<p>No account?<a href="/account/register">Sign-up</a></p>
+
+</div>
+

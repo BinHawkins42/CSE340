@@ -1,0 +1,30 @@
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<%- messages() %>
+
+<% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+
+<div>
+<form id="addclass" method="post" action="/inv/addnewclass">
+            
+    <fieldset>
+        <legend>add new Classification</legend>
+        <label class="top">type new class name<input type="text" name="classification_name" id="classificationName" required></label>
+    </fieldset>
+
+    <input type="submit" value="add" class="submitBtn">
+
+
+</form>
+
+</div>
