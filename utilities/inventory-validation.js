@@ -3,7 +3,7 @@ const { body, validationResult } = require("express-validator")
 const validate = {}
 
 /*  **********************************
- *  Registration Data Validation Rules
+ *  add invitory Data Validation Rules
  * ********************************* */
 validate.newInvRules = () => {
     return [
@@ -18,6 +18,15 @@ validate.newInvRules = () => {
         .trim()
         .isLength({ min: 3 })
         .withMessage("Please provide a Model."), // on error this message is sent.
+
+        body("inv_description")
+        .trim(),
+
+        body("inv_image")
+        .trim(),
+
+        body("inv_thumbnail")
+        .trim(),
   
       // price is required and must be a number 
       body("inv_price")
@@ -28,6 +37,7 @@ validate.newInvRules = () => {
       // year is required and must be a number
       body("inv_year")
       .trim()
+      .isInt()
       .isLength( {min: 4, max: 4} )
       .withMessage("please provide a year."),
 
@@ -44,18 +54,21 @@ validate.newInvRules = () => {
   }
 
   /* ******************************
- * Check data and return errors or continue to registration
+ * Check data and return errors or continue to add inventory
  * ***************************** */
 validate.checkInvData = async (req, res, next) => {
     const { classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color } = req.body
     let errors = []
     errors = validationResult(req)
+    console.log("im in check inv", inv_make)
     if (!errors.isEmpty()) {
       let nav = await utilities.getNav()
+      let classList = await utilities.buildClassificationList()
       res.render("inventory/addnewinv", {
         errors,
         title: "add new invintory",
         nav,
+        classList,
         classification_id,
         inv_make,
         inv_model,
@@ -71,5 +84,36 @@ validate.checkInvData = async (req, res, next) => {
     }
     next()
   }
+
+   /* ******************************
+ * Check data and return errors or continue to edit inventory
+ * ***************************** */
+validate.checkUpdateData = async (req, res, next) => {
+  const { classification_id, inv_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color } = req.body
+  let errors = []
+  errors = validationResult(req)
+  console.log("im in check inv", inv_make)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("inventory/edit-inventory", {
+      errors,
+      title: "edit invintory",
+      nav,
+      classification_id,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color
+    })
+    return
+  }
+  next()
+}
   
   module.exports = validate

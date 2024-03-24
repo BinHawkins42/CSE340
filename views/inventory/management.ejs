@@ -14,6 +14,17 @@
    </ul>
   <% } %>
 
-  <a href="/inv/addnewclass">Add new classification</a>
+<ul>
+  <li><a href="/inv/addnewclass" title="Click to add a new vehicle classification">Add new classification</a></li>
+  <li><a href="/inv/addnewinv" title="Click here a new vehicle">Add new inventory</a></li>
+</ul>
 
-  <a href="/inv/addnewinv">Add new inventory</a>
+<h2>Manage Invintory</h2>
+<p>Choose a classification to see those inventory items</p>
+<%- classificationSelect %>
+
+<table id="inventoryDisplay"></table>
+
+<noscript>JavaScript must be enabled to use this page</noscript>
+
+<script src="../../js/inventory.js"></script>

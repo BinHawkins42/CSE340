@@ -20,4 +20,15 @@ router.post("/addnewclass", classValidate.classificationRules(), classValidate.c
 router.get("/addnewinv", utilities.handleErrors(invController.buildAddNewInv));
 // process new inventory
 router.post("/addnewinv", invValidate.newInvRules(), invValidate.checkInvData, utilities.handleErrors(invController.AddNewInv));
+// Select inv item activity
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
+// deliver edit inventory
+router.get("/edit-inventory/:inventoryId", utilities.handleErrors(invController.editInventoryView));
+// process updates
+router.post("/update", invValidate.newInvRules(), invValidate.checkUpdateData, utilities.handleErrors(invController.updateInventory));
+// deliver delete view
+router.get("/delete/:inv_id", utilities.handleErrors(invController.deleteView));
+// process delete
+router.post("/delete", utilities.handleErrors(invController.deleteItem));
+
 module.exports = router;

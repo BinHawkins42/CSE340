@@ -15,6 +15,8 @@ const static = require("./routes/static")
 const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
+const utilities = require("./utilities/")
 
 /* ***********************
  * View Engine and Templates
@@ -48,6 +50,13 @@ app.use(function(req, res, next){
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
+// login activity
+
+app.use(cookieParser())
+
+//apply token
+app.use(utilities.checkJWTToken)
+
 /* ***********************
  * Routes
  *************************/
@@ -58,6 +67,19 @@ app.get("/",baseController.buildHome)
 app.use("/inv", inventoryRoute)
 // Account routes
 app.use("/account", require("./routes/accountRoute"))
+/* *********************** * 
+Express Error Handler * Place after all other middleware 
+*************************/
+app.use(async (err, req, res, next) => {
+   let nav = await utilities.getNav()
+    console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+     if(err.status == 404 || 500){message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
+    res.render('errors/error', { 
+      title: err.status || 'Server Error', 
+      message, 
+      nav 
+    }) 
+    })
 
 /* ***********************
  * Local Server Information
