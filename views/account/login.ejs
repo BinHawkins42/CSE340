@@ -1,28 +1,31 @@
-<%- messages() %>
+<%- messages() %> <% if (title) { %>
+<h1><%= title %></h1>
+<% } else { res.redirect('/') } %>
 
-<% if (title) { %>
-    <h1><%= title %></h1>
-    <% } else {
-      res.redirect('/')
-    } %>
 <div>
-<form id="loginform" method="post" action="/account/login">
-            
+  <form id="loginform" method="post" action="/account/login">
     <fieldset>
-        <legend>Login</legend>
-        <label class="top">Email*</label>
-        <input type="account_email" name="account_email" placeholder="someone@gmail.com" required>
-        <label Class="top">Passward*</label>
-        <input type="account_password" name="account_password" placeholder="*********" required 
-        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A_Z])(?=*[^-a-zA-Z0-9])(?!.*\s).{12,}$">
+      <legend>Login</legend>
+      <label for="account_email" class="top">Email*</label>
+      <input
+        id="account_email"
+        type="email"
+        name="account_email"
+        placeholder="someone@gmail.com"
+        required
+      />
+      <label for="account_password" class="top">Passward*</label>
+      <input
+        id="account_password"
+        type="password"
+        name="account_password"
+        placeholder="*********"
+        required
+        pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A_Z])(?=*[^-a-zA-Z0-9])(?!.*\s).{12,}$"
+      />
     </fieldset>
+    <input type="submit" value="Login" class="submitBtn" />
+  </form>
 
-    <input type="submit" value="Login" class="submitBtn">
-
-
-</form>
-
-<p>No account?<a href="/account/register">Sign-up</a></p>
-
+  <p>No account?<a href="/account/register">Sign-up</a></p>
 </div>
-
