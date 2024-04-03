@@ -121,14 +121,19 @@ Util.checkJWTToken = (req, res, next) => {
     req.cookies.jwt,
     process.env.ACCESS_TOKEN_SECRET,
     function (err, accountData) {
+      
      if (err) {
-      console.log("im_in_tokencookie")
       req.flash("Please log in")
       res.clearCookie("jwt")
       return res.redirect("/account/login")
-     }
+     } 
      res.locals.accountData = accountData
      res.locals.loggedin = 1
+     res.locals.access = false
+     if (accountData.account_type === "Employee" || accountData.account_type === "Admin") {
+      res.locals.access = true;
+  }
+ 
      next();
     })
   } else {
@@ -146,6 +151,24 @@ Util.checkLogin = (req, res, next) => {
     req.flash("notice", "Please log in.")
     return res.redirect("/account/login")
   }
+ }
+
+ Util.checkAccess = (req, res, next) => {
+  if (res.locals.access) {
+    next()
+  } else {
+    req.flash("notice", "ACCESS DENIED")
+    return res.redirect("/account/login")
+  }
+ }
+
+ Util.getAdditional = async function (account_type) {
+  let section = ""
+  if (account_type === "Admin" || account_type === "Employee") {
+    section += "<h3>Inventory Managment</h3>";
+    section += `<a href="../inv/management" title="Manage Inventory Items">manage inventory items and categories</a>`;
+  }
+  return section
  }
 
 module.exports = Util

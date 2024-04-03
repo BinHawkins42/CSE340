@@ -87,6 +87,26 @@ validate.registationRules = () => {
     ]
   }
 
+  /*  **********************************
+ *  password Data Validation Rules
+ * ********************************* */
+validate.resetPasswordRules = () => {
+  return [
+
+    // password is required and must be strong password
+    body("account_password")
+      .trim()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements."),
+  ]
+}
+
   /* ******************************
  * Check data and return errors or continue to registration
  * ***************************** */

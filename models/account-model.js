@@ -33,10 +33,10 @@ async function getAccountByEmail(account_email) {
 /* *****************************
 *   update account
 * *************************** */
-async function updateAccount({account_firstname, account_lastname, account_email,}){
+async function updateAccount({account_firstname, account_lastname, account_email, account_id}) {
   try {
-    const sql = "UPDATE account SET account_firstname = $1, account_lastname = $2, account_email = $3 RETURNING *"
-    return await pool.query(sql, [account_firstname, account_lastname, account_email,])
+    const sql = "UPDATE account SET account_firstname = $1, account_lastname = $2, account_email = $3 WHERE account_id = $4 RETURNING *"
+    return await pool.query(sql, [account_firstname, account_lastname, account_email, account_id]);
   } catch (error) {
     return error.message
   }
@@ -45,12 +45,15 @@ async function updateAccount({account_firstname, account_lastname, account_email
 /* *****************************
 *   update account
 * *************************** */
-async function updatePassword({account_password}){
+async function updatePassword( account_password, account_id ) {
   try {
-    const sql = "UPDATE account SET account_password = $1 RETURNING *"
-    return await pool.query(sql, [account_password])
+    console.log(account_password, account_id)
+    const sql = "UPDATE account SET account_password = $1 WHERE account_id = $2 RETURNING *";
+    const result = await pool.query(sql, [account_password, account_id]);
+    return result.rows[0]; // Assuming you want to return the updated account data
   } catch (error) {
-    return error.message
+    console.error("Error updating password:", error);
+    throw new Error("Failed to update password.");
   }
 }
 

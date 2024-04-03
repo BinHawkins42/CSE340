@@ -199,7 +199,6 @@ invCont.getInventoryJSON = async (req, res, next) => {
  *  Build edit inventory view
  * ************************** */
 invCont.editInventoryView = async function (req, res, next) {
-  console.log("im in editview")
   const inv_id = parseInt(req.params.inventoryId)
   let nav = await utilities.getNav()
   const itemData = await invModel.getInventoryByInvId(inv_id)

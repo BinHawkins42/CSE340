@@ -35,23 +35,31 @@ router.post(
 router.get(
   "/",
   utilities.checkLogin,
+  utilities.checkJWTToken,
   utilities.handleErrors(accountController.buildAccountManagment)
 );
 
+router.get(
+  "/update",
+  utilities.checkLogin,
+  utilities.checkJWTToken,
+  utilities.handleErrors(accountController.buildAccountupdate)
+)
+
 // process Account update
 router.post(
-  "/accountManagment",
+  "/update",
   regValidate.registationRules(),
-  regValidate.checkRegData,
-  utilities.handleErrors(accountController.accountUpdate)
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.updateAccount)
 );
 
 // process Password update
 router.post(
-  "/accountManagment",
-  regValidate.registationRules(),
-  regValidate.checkRegData,
-  utilities.handleErrors(accountController.resetPassword)
+  "/update/:password",
+  regValidate.resetPasswordRules(),
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.updatePassword)
 );
 
 router.get(
