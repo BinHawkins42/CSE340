@@ -173,11 +173,18 @@ async function updateAccount(req, res, next) {
       account_email,
       account_id,
     });
-
+      // Rebuild the JWT with new data delete 
+      updateResult.account_password; 
+      const accessToken = jwt.sign(updateResult, process.env.ACCESS_TOKEN_SECRET, 
+        { expiresIn: 3600 * 1000, }); 
+        res.cookie("jwt", accessToken, 
+        { httpOnly: true, maxAge: 3600 * 1000 }
+        );
     if (updateResult) {
       const accountName = `${updateResult.account_firstname} ${updateResult.account_lastname}`;
       req.flash("notice", `${accountName} was successfully updated.`);
       res.redirect("/account/update");
+
     } else {
       const accountName = `${account_firstname} ${account_lastname}`;
       req.flash("notice", "Sorry, the update failed.");

@@ -219,6 +219,23 @@ form, .submitBtn {
   padding-right: 25%;
 }
 
+/* search view */
+.search_results {
+  list-style: none;
+}
+
+.search_results .card {
+  display: flex;
+  border: 5px solid black;
+  border-radius: 1rem;
+  margin: .5rem;
+  text-decoration: none;
+}
+
+.search_results .card img {
+  max-width: 200px;
+}
+
 @media screen and (min-width: 800px) {
 
 

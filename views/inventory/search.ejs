@@ -1,0 +1,26 @@
+<% if (title) { %>
+  <h1 class="title"><%= title %></h1>
+<% } else {
+  res.redirect('/');
+} %>
+
+<div>
+  <form id="searchForm" method="get" action="/inv/search_results">
+    <fieldset>
+      <legend>Search available vehicles</legend>
+      <input type="search" name="search_value" id="searchBar">
+      <button type="submit">Search</button>
+    </fieldset>
+  </form>
+</div>
+
+<% if (search_results && search_results.length > 0) { %>
+  <h2>Search Results:</h2>
+  <u class="search_results">
+    <% search_results.forEach(result => { %>
+      <li><a class="card" href="/inv/detail/<%= result.inv_id %>"><img src="<%= result.inv_thumbnail %>"><%= result.inv_make %> | <%= result.inv_model %> | <%= result.inv_description %></a></li>
+    <% }); %>
+  </ul>
+<% } else { %>
+  <p>No results found.</p>
+<% } %>

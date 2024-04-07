@@ -30,7 +30,6 @@ async function getInventoryByClassificationId(classification_id) {
  * ************************** */
 async function getInventoryByInvId(Inv_id) {
   try {
-    console.log("im in get invbyid")
     const data = await pool.query(
       `SELECT * FROM public.inventory
       WHERE inv_id = $1`,
@@ -55,12 +54,37 @@ async function addnewclass(classification_name){
     }
   }
 
+  // search bar
+
+  async function searchInv(search_values){
+    // Check if search_values is an array
+    if (!Array.isArray(search_values)) {
+        console.error('search_values is not an array');
+        return []; // Return an empty array or handle the error accordingly
+    }
+
+    // Proceed with mapping if search_values is an array
+   
+    const array = search_values.map(search_value => `'%${search_value}%'`);
+
+    try {
+      const sql = `
+      SELECT DISTINCT * 
+      FROM public.inventory 
+      WHERE
+      CONCAT(inv_make, ' ', inv_model, ' ', inv_description, ' ', inv_year, ' ', inv_price, ' ', inv_miles, ' ', inv_color) ILIKE ALL (array[${array}])`;
+        const data = await pool.query(sql)
+         return data.rows
+    } catch (error) {
+        console.error('model error: ' + error);
+        return []; // Return an empty array or handle the error accordingly
+    }
+  }
   /*****************************
    * add new inventory
    * ***************************/
   async function AddNewInv({classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color}){
     try {
-      console.log("in add new inv", inv_make)
       const sql = 
       "INSERT INTO public.inventory (classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *";
       return await pool.query(sql, [classification_id, inv_make, inv_model, inv_description, inv_image, inv_thumbnail, inv_price, inv_year, inv_miles, inv_color])
@@ -121,4 +145,4 @@ async function deleteInventoryItem(inv_id) {
 }
 
 
-module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInvId, addnewclass, AddNewInv, updateInventory, deleteInventoryItem}
+module.exports = {getClassifications, getInventoryByClassificationId, getInventoryByInvId, addnewclass, AddNewInv, updateInventory, deleteInventoryItem, searchInv}

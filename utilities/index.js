@@ -84,6 +84,8 @@ Util.buildDetailGrid = async function(data){
   return grid
 }
 
+
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 

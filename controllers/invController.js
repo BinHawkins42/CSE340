@@ -25,6 +25,37 @@ invCont.buildByClassificationId = async function (req, res, next) {
   });
 };
 
+// Build search view
+
+invCont.buildInvSearch = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  res.render("./inventory/search", {
+    title: "search inventory",
+    nav,
+    search_results: ""
+  });
+};
+
+// process search results
+
+invCont.searchInvResult = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const { search_value } = req.query; // Assuming the search input is sent via query string
+  try {
+    const search_values = search_value.trim().split(/\s+/); // Convert search input to array
+    console.log("im in searchInv", search_values)
+    const search_results = await invModel.searchInv(search_values);
+    res.render("./inventory/search", {
+      title: "Search Results",
+      nav,
+      search_results
+    });
+  } catch (error) {
+    console.error("Controller error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 /* ***************************
  *  Build by detail view
  * ************************** */
@@ -127,7 +158,6 @@ invCont.buildAddNewInv = async function(req, res, next) {
 };
 
 invCont.AddNewInv = async function (req, res) {
-  console.log("im in inventorycontroller")
   
   let classList = await utilities.buildClassificationList()
 
@@ -146,7 +176,6 @@ invCont.AddNewInv = async function (req, res) {
     inv_color
 
   } = req.body
-  console.log("im before invmodel", inv_make)
   const regResult = await invModel.AddNewInv({
     classification_id,
     inv_make,

@@ -30,5 +30,9 @@ router.post("/update", utilities.checkAccess, invValidate.newInvRules(), invVali
 router.get("/delete/:inv_id", utilities.checkAccess, utilities.handleErrors(invController.deleteView));
 // process delete
 router.post("/delete", utilities.checkAccess, utilities.handleErrors(invController.deleteItem));
+// Route to render search view
+router.get("/search", utilities.handleErrors(invController.buildInvSearch));
+// Route to handle search request and display results
+router.get("/search_results", utilities.handleErrors(invController.searchInvResult));
 
 module.exports = router;
